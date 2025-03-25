@@ -1,0 +1,13 @@
+[Unit]
+Description=Open Banking Gateway Service
+After=network.target
+
+[Service]
+User=obg
+ExecStart=/usr/bin/java -jar /var/lib/obg/open-banking-gateway-1.0.1-SNAPSHOT-exec.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

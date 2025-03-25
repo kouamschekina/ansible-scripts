@@ -1,0 +1,17 @@
+---
+- name: Copy OBG Debian Package
+  copy:
+    src: files/obg-deb.deb
+    dest: /tmp/obg-deb.deb
+
+- name: Install OBG Debian Package
+  apt:
+    deb: /tmp/obg-deb.deb
+    state: present
+
+- name: Ensure OBG service is enabled and started
+  systemd:
+    name: obg
+    enabled: true
+    state: started
+  notify: Reload systemd

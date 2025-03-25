@@ -1,0 +1,5 @@
+- name: Deploy OBG with Docker Compose
+  hosts: obg_servers
+  become: yes
+  roles:
+    - obg
