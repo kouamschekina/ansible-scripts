@@ -1,17 +1,57 @@
----
-- name: Copy OBG Debian Package
-  copy:
-    src: files/obg-deb.deb
-    dest: /tmp/obg-deb.deb
+# ---
+# - name: Copy OBG Debian Package
+#   copy:
+#     src: files/opba-embedded-starter_1.0.1~SNAPSHOT_all.deb
+#     dest: /tmp/opba-embedded-starter.deb
 
-- name: Install OBG Debian Package
+# - name: Install OBG Debian Package
+#   apt:
+#     deb: /tmp/opba-embedded-starter.deb
+#     state: present
+#     update_cache: yes
+#     force_apt_get: yes
+
+# - name: Ensure OBG service is enabled and started
+#   systemd:
+#     name: obg
+#     enabled: true
+#     state: started
+#   notify: Reload systemd
+
+# - name: Copy FinTech Server Debian Package
+#   copy:
+#     src: files/fintech-server_1.0.1~SNAPSHOT_all.deb
+#     dest: /tmp/fintech-server.deb
+
+# - name: Install FinTech Server Debian Package
+#   apt:
+#     deb: /tmp/fintech-server.deb
+#     state: present
+#     update_cache: yes
+#     force_apt_get: yes
+
+# - name: Ensure FinTech Server service is enabled and started
+#   systemd:
+#     name: fintech.service
+#     enabled: true
+#     state: started
+#   notify: Reload systemd
+  
+# - name: Clean up temporary .deb files
+#   file:
+#     path: "{{ item }}"
+#     state: absent
+#   loop:
+#     - /tmp/opba-embedded-starter.deb
+#     - /tmp/fintech-server.deb
+
+---
+- name: Install Open Banking Gateway Debian package
   apt:
-    deb: /tmp/obg-deb.deb
+    deb: "{{ playbook_dir }}/roles/obg/files/opba-embedded-starter_1.0.1~SNAPSHOT_all.deb"
     state: present
 
-- name: Ensure OBG service is enabled and started
-  systemd:
-    name: obg
-    enabled: true
-    state: started
-  notify: Reload systemd
+- name: Install Fintech Server Debian package
+  apt:
+    deb: "{{ playbook_dir }}/roles/obg/files/fintech-server_1.0.1~SNAPSHOT_all.deb"
+    state: present

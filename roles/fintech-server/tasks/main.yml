@@ -1,0 +1,11 @@
+---
+- name: Ensure fintech-server package is installed
+  apt:
+    deb: "{{ playbook_dir }}/roles/obg/files/fintech-server_1.0.1~SNAPSHOT_all.deb"
+    state: present
+
+- name: Start fintech server service
+  systemd:
+    name: fintech.service
+    state: started
+    enabled: true

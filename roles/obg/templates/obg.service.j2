@@ -3,8 +3,13 @@ Description=Open Banking Gateway Service
 After=network.target
 
 [Service]
-User=obg
+User=root
 ExecStart=/usr/bin/java -jar /var/lib/obg/open-banking-gateway-1.0.1-SNAPSHOT-exec.jar
+Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/open_banking?currentSchema=banking_protocol"
+Environment="SPRING_DATASOURCE_USERNAME=postgres"
+Environment="SPRING_DATASOURCE_PASSWORD=docker"
+Environment="SPRING_LIQUIBASE_PARAMETERS_ADORSYS-SANDBOX-URL=https://obg-bank-dev-xs2a.cloud.adorsys.de"
+Environment="SPRING_LIQUIBASE_PARAMETERS_ADORSYS-HBCI-SANDBOX-URL=http://localhost:8090/hbci-mock/"
 SuccessExitStatus=143
 Restart=on-failure
 RestartSec=10

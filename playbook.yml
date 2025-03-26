@@ -2,4 +2,6 @@
   hosts: obg_servers
   become: yes
   roles:
+    - postgres
+    - fintech-server
     - obg
