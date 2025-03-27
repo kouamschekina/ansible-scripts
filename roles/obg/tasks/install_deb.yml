@@ -13,6 +13,11 @@
         owner: root
         group: root
         mode: '0644'
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes    
+        
     - name: Ensure OBG service is enabled and started
       systemd:
         name: obg.service
