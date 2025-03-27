@@ -1,5 +1,4 @@
 ---
-
     - name: Install Open Banking Gateway Debian package
       apt:
         deb: "{{ role_path }}/files/opba-embedded-starter_1.0.1~SNAPSHOT_all.deb"
@@ -13,10 +12,10 @@
         owner: root
         group: root
         mode: '0644'
+
     - name: Ensure OBG service is enabled and started
       systemd:
         name: obg.service
         enabled: true
         state: started
       notify: Reload systemd
-

@@ -1,20 +1,3 @@
 ---
-- name: Ensure fintech-server package is installed
-  apt:
-    deb: "{{ playbook_dir }}/roles/obg/files/fintech-server_1.0.1~SNAPSHOT_all.deb"
-    state: present
-
-- name: Copy FinTech Server systemd service file
-  template:
-    src: fintech-server.service.j2
-    dest: /etc/systemd/system/fintech.service
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Ensure FinTech Server service is enabled and started
-  systemd:
-    name: fintech.service
-    state: started
-    enabled: true
-  notify: Reload systemd
+- name: Install Dependencies
+  include_tasks: install_deb.yml
