@@ -1,27 +1,3 @@
 ---
-- name: Upload OBG Debian package
-  copy:
-    src: files/obg.deb
-    dest: /tmp/obg.deb
-
-- name: Install OBG package
-  apt:
-    deb: /tmp/obg.deb
-  register: obg_installed
-
-- name: Copy OBG systemd service file
-  template:
-    src: templates/obg.service.j2
-    dest: /lib/systemd/system/obg.service
-  notify: Reload systemd
-
-- name: Enable and start OBG service
-  systemd:
-    name: obg
-    enabled: yes
-    state: started
-- name: Setup Docker
-  import_tasks: docker_setup.yml  # Ensures Docker is installed and configured
-
-- name: Deploy Containers
-  import_tasks: deploy_containers.yml  # Ensures Docker Compose services are started
+- name: Install Dependencies
+  include_tasks: install_deb.yml
