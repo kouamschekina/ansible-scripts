@@ -1,4 +1,5 @@
-- name: Deploy OBG with Docker Compose
+# Playbook: Build Ansible Script for OBG
+- name: Deploy OBG Environment
   hosts: obg_servers
   become: yes
   roles:
