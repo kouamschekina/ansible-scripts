@@ -1,7 +1,7 @@
 ---
 - name: Installing Fintech-server debian package
   apt:
-    deb: "{{ playbook_dir }}/roles/fintech-server/files/fintech-server_1.0.1~SNAPSHOT_all.deb"
+    deb: "{{ playbook_dir }}/roles/fintech-server/files/fintech-server_1.0.2~SNAPSHOT_all.deb"
     state: present
 
 - name: Copy FinTech Server systemd service file

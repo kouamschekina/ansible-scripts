@@ -2,7 +2,7 @@
 
     - name: Install Open Banking Gateway Debian package
       apt:
-        deb: "{{ role_path }}/files/opba-embedded-starter_1.0.1~SNAPSHOT_all.deb"
+        deb: "{{ role_path }}/files/opba-embedded-starter_1.0.2~SNAPSHOT_all.deb"
         state: present
         update_cache: yes
 
