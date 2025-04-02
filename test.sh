@@ -3,26 +3,50 @@ set -euo pipefail
 
 echo "🚀 Starting Ansible Deployment Test..."
 
-# Ensure sshpass is installed (needed for --ask-pass)
-if ! command -v sshpass &> /dev/null; then
-    echo "❌ sshpass is not installed. Installing now..."
-    sudo apt-get update && sudo apt-get install -y sshpass
-fi
+# Function to check if a command exists
+check_command() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "❌ $1 is not installed. Installing now..."
+        sudo apt-get update && sudo apt-get install -y "$1"
+    else
+        echo "✅ $1 is already installed"
+    fi
+}
 
-# Check if Ansible is installed
-if ! command -v ansible-playbook &> /dev/null; then
-    echo "❌ Ansible is not installed. Installing now..."
-    sudo apt-get update && sudo apt-get install -y ansible
-fi
+# Function to check if a file exists
+check_file() {
+    if [ ! -f "$1" ]; then
+        echo "❌ Required file '$1' not found!"
+        exit 1
+    else
+        echo "✅ Found required file '$1'"
+    fi
+}
+
+# Ensure required commands are installed
+check_command "sshpass"
+check_command "ansible-playbook"
 
 # Define inventory file location
 INVENTORY_FILE="inventory"
+PLAYBOOK_FILE="playbook.yml"
+
+# Check for required files
+check_file "$INVENTORY_FILE"
+check_file "$PLAYBOOK_FILE"
 
 # Clear any existing SSH fingerprint
+echo "🧹 Cleaning up SSH fingerprints..."
 ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[127.0.0.1]"
 
 # Run the Ansible playbook
 echo "🔧 Running Ansible Playbook..."
-ansible-playbook -i "$INVENTORY_FILE" playbook.yml --ask-pass --ask-become-pass
+echo "📝 Using inventory file: $INVENTORY_FILE"
+echo "📝 Using playbook file: $PLAYBOOK_FILE"
 
-echo "✅ Deployment Complete!"
+if ansible-playbook -i "$INVENTORY_FILE" "$PLAYBOOK_FILE" --ask-pass --ask-become-pass; then
+    echo "✅ Deployment completed successfully!"
+else
+    echo "❌ Deployment failed! Please check the error messages above."
+    exit 1
+fi
