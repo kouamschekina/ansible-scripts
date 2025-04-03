@@ -13,6 +13,16 @@ check_command() {
     fi
 }
 
+# Function to check if a package is installed
+check_package() {
+    if ! dpkg -l "$1" 2>/dev/null | grep -q "^ii"; then
+        echo "❌ $1 is not installed. Installing now..."
+        sudo apt-get update && sudo apt-get install -y "$1"
+    else
+        echo "✅ $1 is already installed"
+    fi
+}
+
 # Function to check if a file exists
 check_file() {
     if [ ! -f "$1" ]; then
@@ -26,6 +36,10 @@ check_file() {
 # Ensure required commands are installed
 check_command "sshpass"
 check_command "ansible-playbook"
+
+# Ensure required packages are installed
+check_package "openssh-server"
+check_package "python3-psycopg2"
 
 # Define inventory file location
 INVENTORY_FILE="inventory"
