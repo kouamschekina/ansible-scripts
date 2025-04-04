@@ -35,7 +35,7 @@ check_file() {
 
 # Ensure required commands are installed
 check_command "sshpass"
-check_command "ansible-playbook"
+check_command "ansible"
 
 # Ensure required packages are installed
 check_package "openssh-server"
@@ -51,7 +51,12 @@ check_file "$PLAYBOOK_FILE"
 
 # Clear any existing SSH fingerprint
 echo "🧹 Cleaning up SSH fingerprints..."
-ssh-keygen -f "$HOME/.ssh/known_hosts" -R "[127.0.0.1]"
+TARGET_HOST=$(grep -v '^\[.*\]' "$INVENTORY_FILE" | grep -v '^$' | head -n1 | awk '{print $1}')
+if [ -n "$TARGET_HOST" ]; then
+    ssh-keygen -f "$HOME/.ssh/known_hosts" -R "$TARGET_HOST"
+else
+    echo "⚠️ Warning: Could not determine target host from inventory file"
+fi
 
 # Run the Ansible playbook
 echo "🔧 Running Ansible Playbook..."
